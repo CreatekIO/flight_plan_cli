@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'flight_plan_cli' 
+
+puts "FlightPlan CLI version #{FlightPlanCli.version}" if ARGV.empty? || ARGV[0] == 'help'
+
+#FlightPlanCli::Initializer.start(ARGV)
