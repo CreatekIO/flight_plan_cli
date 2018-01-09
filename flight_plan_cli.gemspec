@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.executables << 'flight_plan_cli'
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.16.1'
+  spec.add_development_dependency 'bundler', '~> 1.15.4'
   spec.add_development_dependency 'rake', '~> 12.3.0'
   spec.add_development_dependency 'rspec', '~> 3.7.0'
   spec.add_development_dependency 'version', '~> 1.1.1'
