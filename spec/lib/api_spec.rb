@@ -9,15 +9,15 @@ RSpec.describe FlightPlanCli::Api do
   let(:board_id) { 1 }
 
   describe '#issues' do
-
-
     it 'lists issue for a given board' do
+
+      stub = stub_request(:get, "https://flightplan.createk.io/api/board_tickets").
+        with(query: hash_including( { board_id: board_id.to_s })).
+        to_return(status: 200, body: "", headers: {})
+      
       subject.board_tickets(board_id: board_id.to_s) 
 
-
-
-
-
+      expect(stub).to have_been_requested
     end
   end
 end

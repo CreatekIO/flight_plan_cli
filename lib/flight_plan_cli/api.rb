@@ -10,11 +10,12 @@ module FlightPlanCli
     end
 
     def board_tickets(board_id: nil, repo_id: nil, repo_url: nil, assignee_username: nil)
-      params = {}
-      params[:board_id] = board_id unless board_id.nil?
-      params[:repo_id] = repo_id unless repo_id.nil?
-      params[:repo_url] = repo_url unless repo_url.nil?
-      params[:assignee_username] = assignee_username unless assignee_username.nil?
+      params = {
+        board_id: board_id,
+        repo_id: repo_id,
+        repo_url: repo_url,
+        assignee_username: assignee_username
+      }
 
       self.class.get("#{url}/board_tickets", query: params, headers: headers)
     end
