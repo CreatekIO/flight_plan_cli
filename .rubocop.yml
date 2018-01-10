@@ -1,0 +1,13 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+

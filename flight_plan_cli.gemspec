@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.summary               = 'Command-line tool for FlightPlan'
   spec.homepage              = 'https://github.com/jcleary/flight_plan_cli'
   spec.license               = 'MIT'
-  spec.required_ruby_version = '>= 2.0'
+  spec.required_ruby_version = '>= 2.3'
 
   spec.files = Dir['{lib,bin}/**/**', 'VERSION']
   spec.executables << 'fp'

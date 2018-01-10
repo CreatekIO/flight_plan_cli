@@ -9,7 +9,9 @@ module FlightPlanCli
       @secret = secret
     end
 
-    def board_tickets(board_id: nil, repo_id: nil, repo_url: nil, assignee_username: nil)
+    def board_tickets(
+      board_id: nil, repo_id: nil, repo_url: nil, assignee_username: nil
+    )
       params = {
         board_id: board_id,
         repo_id: repo_id,
@@ -26,7 +28,7 @@ module FlightPlanCli
 
     def headers
       @headers = {
-        'Authorization': "Token token=\"#{key}:#{secret}\"" 
+        'Authorization' => "Token token=\"#{key}:#{secret}\""
       }
     end
   end
