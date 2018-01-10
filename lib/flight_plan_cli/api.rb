@@ -25,6 +25,9 @@ module FlightPlanCli
     attr_reader :url, :key, :secret
 
     def headers
+      @headers = {
+        'Authorization': "Token token=\"#{key}:#{secret}\"" 
+      }
     end
   end
 end
