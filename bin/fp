@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-require 'flight_plan_cli' 
+require 'flight_plan_cli'
 
 if ARGV.empty? || ARGV[0] == 'help'
   puts ''
-  puts "FlightPlan CLI version #{FlightPlanCli.version}" 
+  puts "FlightPlan CLI version #{FlightPlanCli.version}"
   puts ''
 end
 
