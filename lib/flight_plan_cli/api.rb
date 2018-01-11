@@ -2,7 +2,6 @@ require 'httparty'
 
 module FlightPlanCli
   class Api
-    include HTTParty
     def initialize(url:, key:, secret:)
       @url = url
       @key = key
@@ -19,7 +18,8 @@ module FlightPlanCli
         assignee_username: assignee_username
       }
 
-      self.class.get("#{url}/board_tickets", query: params, headers: headers)
+      HTTParty.get("#{url}/board_tickets.json", query: params, headers:
+                    headers)
     end
 
     private
