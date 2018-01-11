@@ -13,7 +13,7 @@ module FlightPlanCli
     desc 'ls', 'List open issues'
     def ls
       swimlanes = tickets_by_swimlane
-      default_swimlanes.each do |swimlane_id|
+      default_swimlane_ids.each do |swimlane_id|
         next unless swimlanes.key?(swimlane_id)
 
         swimlane = swimlanes[swimlane_id]
@@ -29,8 +29,8 @@ module FlightPlanCli
 
     private
 
-    attr_reader :board_id, :default_swimlanes
-
+    attr_reader :board_id, :default_swimlane_ids
+    attr_reader :api_key, :api_secret
 
     def parse_yaml
       unless File.exist?(YAML_FILE)
@@ -40,17 +40,19 @@ module FlightPlanCli
       config = YAML.load_file(YAML_FILE)
 
       @board_id = config['board_id']
-      @default_swimlanes = config['ls']['default_swimlanes']
+      @default_swimlane_ids = config['ls']['default_swimlane_ids']
+      @api_key = config['api_key']
+      @api_secret = config['api_secret']
     end
 
     def tickets_by_swimlane
-      response = api.board_tickets(board_id: board_id)
+      response = client.board_tickets(board_id: board_id)
 
       board = response['board_tickets'].first['board']
       swimlanes = {}
       response['board_tickets'].each do |board_ticket|
         swimlane = board_ticket['swimlane']
-        next unless default_swimlanes.include? swimlane['id']
+        next unless default_swimlane_ids.include? swimlane['id']
 
         swimlanes[swimlane['id']] ||= swimlane
         swimlanes[swimlane['id']]['tickets'] ||= []
@@ -59,8 +61,12 @@ module FlightPlanCli
       board['swimlanes'] = swimlanes
     end
 
-    def api
-      @api ||= FlightPlanCli::Api.new(url: 'http://dev.createk.io/api', key: '', secret: '')
+    def client
+      @client ||= FlightPlanCli::Api.new(
+        url: 'http://dev.createk.io/api',
+        key: api_key,
+        secret: api_secret
+      )
     end
   end
 end
