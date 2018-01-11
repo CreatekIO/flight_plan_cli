@@ -7,7 +7,7 @@ RSpec.describe FlightPlanCli::Api do
   let(:secret) { '334547865fhr2uyj' }
 
   let(:board_id) { 1 }
-  let(:board_tickets_url) { "#{url}/board_tickets" }
+  let(:board_tickets_url) { "#{url}/board_tickets.json" }
   let(:expected_headers) {
     {
       'Authorization' => 'Token token="55455565ghgjffgt:334547865fhr2uyj"'
