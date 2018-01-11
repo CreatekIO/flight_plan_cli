@@ -44,7 +44,7 @@ module FlightPlanCli
     end
 
     def print_swimlane(swimlane)
-      puts "#{swimlane['id']} - #{swimlane['name']}/".green
+      puts "#{swimlane['name']} (#{swimlane['tickets'].count})".green
       swimlane['tickets'].each do |ticket|
         puts "├── #{ticket['remote_number']} : #{ticket['remote_title']}".yellow
       end
