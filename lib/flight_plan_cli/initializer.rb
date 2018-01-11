@@ -30,7 +30,7 @@ module FlightPlanCli
     private
 
     attr_reader :board_id, :default_swimlane_ids
-    attr_reader :api_key, :api_secret
+    attr_reader :api_url, :api_key, :api_secret
 
     def parse_yaml
       unless File.exist?(YAML_FILE)
@@ -41,6 +41,8 @@ module FlightPlanCli
 
       @board_id = config['board_id']
       @default_swimlane_ids = config['ls']['default_swimlane_ids']
+
+      @api_url = config['api_url']
       @api_key = config['api_key']
       @api_secret = config['api_secret']
     end
@@ -63,7 +65,7 @@ module FlightPlanCli
 
     def client
       @client ||= FlightPlanCli::Api.new(
-        url: 'http://dev.createk.io/api',
+        url: api_url,
         key: api_key,
         secret: api_secret
       )
