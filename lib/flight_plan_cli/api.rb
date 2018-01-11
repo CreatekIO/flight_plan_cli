@@ -8,9 +8,7 @@ module FlightPlanCli
       @secret = secret
     end
 
-    def board_tickets(
-      board_id: nil, repo_id: nil, repo_url: nil, assignee_username: nil
-    )
+    def board_tickets(board_id: nil, repo_id: nil, repo_url: nil, assignee_username: nil)
       params = {
         board_id: board_id,
         repo_id: repo_id,
@@ -18,8 +16,7 @@ module FlightPlanCli
         assignee_username: assignee_username
       }
 
-      HTTParty.get("#{url}/board_tickets.json", query: params, headers:
-                    headers)
+      HTTParty.get( "#{url}/board_tickets.json", query: params, headers: headers)
     end
 
     private
