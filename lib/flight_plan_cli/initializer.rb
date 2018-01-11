@@ -16,11 +16,7 @@ module FlightPlanCli
       default_swimlane_ids.each do |swimlane_id|
         next unless swimlanes.key?(swimlane_id)
 
-        swimlane = swimlanes[swimlane_id]
-        puts "#{swimlane['id']} - #{swimlane['name']}/".green
-        swimlane['tickets'].each do |ticket|
-          puts "├── #{ticket['remote_number']} : #{ticket['remote_title']}".yellow
-        end
+        print_swimlane(swimlanes[swimlane_id])
       end
     rescue Errno::ECONNREFUSED, SocketError => e
       # TODO: caching - low timeout (5s) then fallback to cache
@@ -45,6 +41,13 @@ module FlightPlanCli
       @api_url = config['api_url']
       @api_key = config['api_key']
       @api_secret = config['api_secret']
+    end
+
+    def print_swimlane(swimlane)
+      puts "#{swimlane['id']} - #{swimlane['name']}/".green
+      swimlane['tickets'].each do |ticket|
+        puts "├── #{ticket['remote_number']} : #{ticket['remote_title']}".yellow
+      end
     end
 
     def tickets_by_swimlane
