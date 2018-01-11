@@ -16,7 +16,7 @@ module FlightPlanCli
         assignee_username: assignee_username
       }
 
-      HTTParty.get( "#{url}/board_tickets.json", query: params, headers: headers)
+      HTTParty.get("#{url}/board_tickets.json", query: params, headers: headers)
     end
 
     private
