@@ -39,8 +39,8 @@ module FlightPlanCli
       @default_swimlane_ids = config['ls']['default_swimlane_ids']
 
       @api_url = config['api_url']
-      @api_key = config['api_key']
-      @api_secret = config['api_secret']
+      @api_key = ENV['FLIGHT_PLAN_API_KEY']
+      @api_secret = ENV['FLIGHT_PLAN_API_SECRET']
     end
 
     def print_swimlane(swimlane)
