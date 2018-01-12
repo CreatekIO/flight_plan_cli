@@ -2,11 +2,14 @@ require 'thor'
 require 'colorize'
 
 module FlightPlanCli
+  class ApiUnauthorized < StandardError; end
+  class ApiNotFound < StandardError; end
+
   class Initializer < Thor
     YAML_FILE = '.flight_plan_cli.yml'.freeze
 
     def initialize(*args)
-      parse_yaml
+      read_config
       super
     end
 
@@ -18,24 +21,21 @@ module FlightPlanCli
 
         print_swimlane(swimlanes[swimlane_id])
       end
+    rescue ApiUnauthorized
+      puts 'Unauthorize. Please ensure your key and secret as setup correctly'.red
     rescue Errno::ECONNREFUSED, SocketError => e
       # TODO: caching - low timeout (5s) then fallback to cache
-      puts "Network error - #{e.message}".red
+      puts "Network error. #{e.message}".red
     end
 
     private
 
-    attr_reader :board_id, :default_swimlane_ids
+    attr_reader :board_id, :repo_id, :default_swimlane_ids
     attr_reader :api_url, :api_key, :api_secret
 
-    def parse_yaml
-      unless File.exist?(YAML_FILE)
-        puts "Could not file #{YAML_FILE} file."
-        exit 1
-      end
-      config = YAML.load_file(YAML_FILE)
-
+    def read_config
       @board_id = config['board_id']
+      @repo_id = config['repo_id']
       @default_swimlane_ids = config['ls']['default_swimlane_ids']
 
       @api_url = config['api_url']
@@ -46,14 +46,15 @@ module FlightPlanCli
     def print_swimlane(swimlane)
       puts "#{swimlane['name']} (#{swimlane['tickets'].count})".green
       swimlane['tickets'].each do |ticket|
-        puts "├── #{ticket['remote_number']} : #{ticket['remote_title']}".yellow
+        puts "├── #{ticket['remote_number'].rjust(4)} : #{ticket['remote_title']}".yellow
       end
     end
 
     def tickets_by_swimlane
-      response = client.board_tickets(board_id: board_id)
+      response = client.board_tickets(board_id: board_id, repo_id: repo_id)
+      raise ApiUnauthorized if response.code == 401
+      raise ApiNotFound if response.code == 404
 
-      board = response['board_tickets'].first['board']
       swimlanes = {}
       response['board_tickets'].each do |board_ticket|
         swimlane = board_ticket['swimlane']
@@ -63,7 +64,18 @@ module FlightPlanCli
         swimlanes[swimlane['id']]['tickets'] ||= []
         swimlanes[swimlane['id']]['tickets'] << board_ticket['ticket']
       end
-      board['swimlanes'] = swimlanes
+      swimlanes
+    end
+
+    def config
+      @config ||=
+        begin
+          unless File.exist?(YAML_FILE)
+            puts "Could not file #{YAML_FILE} file."
+            exit 1
+          end
+          YAML.load_file(YAML_FILE)
+        end
     end
 
     def client
