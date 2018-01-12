@@ -56,7 +56,7 @@ module FlightPlanCli
       raise ApiNotFound if response.code == 404
 
       swimlanes = {}
-      response['board_tickets'].each do |board_ticket|
+      response.each do |board_ticket|
         swimlane = board_ticket['swimlane']
         next unless default_swimlane_ids.include? swimlane['id']
 
