@@ -17,7 +17,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 1.15.4'
-  spec.add_development_dependency 'dotenv', '~> 2.2.1'
   spec.add_development_dependency 'rake', '~> 12.3.0'
   spec.add_development_dependency 'rspec', '~> 3.7.0'
   spec.add_development_dependency 'rspec_junit_formatter', '~> 0.3.0'
@@ -26,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '~> 3.2.1'
 
   spec.add_dependency 'colorize', '~> 0.8.1'
+  spec.add_dependency 'dotenv', '~> 2.2.1'
   spec.add_dependency 'httparty', '~> 0.15.6'
   spec.add_dependency 'rugged', '~> 0.26.0'
   spec.add_dependency 'thor', '~> 0.20.0'
