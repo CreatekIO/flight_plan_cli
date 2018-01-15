@@ -1,5 +1,7 @@
 module FlightPlanCli
   module Config
+    private
+
     YAML_FILE = '.flight_plan_cli.yml'.freeze
 
     attr_reader :board_id, :repo_id, :default_swimlane_ids

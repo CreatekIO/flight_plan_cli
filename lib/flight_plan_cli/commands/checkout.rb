@@ -10,6 +10,8 @@ module FlightPlanCli
         puts "Unable to checkout: #{e.message}".red
       end
 
+      private
+
       def local_branch_for(issue)
         issue_branches = local_branches.map(&:name).grep(/##{issue}[^0-9]/)
         return false unless issue_branches.count == 1

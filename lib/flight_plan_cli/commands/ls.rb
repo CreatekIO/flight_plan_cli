@@ -21,6 +21,8 @@ module FlightPlanCli
         puts "Network error. #{e.message}".red
       end
 
+      private
+
       def tickets_by_swimlane
         response = client.board_tickets(board_id: board_id, repo_id: repo_id)
         puts 'ok2'
