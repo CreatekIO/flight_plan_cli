@@ -50,11 +50,15 @@ module FlightPlanCli
 
       def fetch
         puts 'Fetching...'.green
-        git.remotes.each { |remote| remote.fetch(credentials: ssh_agent) }
+        git.remotes.each { |remote| remote.fetch(credentials: credentials) }
       end
 
-      def ssh_agent
-        @ssh_agent ||= Rugged::Credentials::SshKeyFromAgent.new(username: 'git')
+      def credentials
+        @ssh_agent ||= Rugged::Credentials::SshKey.new(
+          username: 'git',
+          publickey: File.expand_path('~/.ssh/id_rsa.pub'),
+          privatekey: File.expand_path('~/.ssh/id_rsa')
+        )
       end
     end
   end
