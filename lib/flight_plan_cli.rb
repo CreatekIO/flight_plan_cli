@@ -1,6 +1,7 @@
 require 'dotenv/load'
 require 'flight_plan_cli/config'
 require 'flight_plan_cli/commands/ls'
+require 'flight_plan_cli/commands/checkout'
 require 'flight_plan_cli/initializer'
 require 'flight_plan_cli/version'
 require 'flight_plan_cli/api'
