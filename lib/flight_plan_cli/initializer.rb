@@ -25,8 +25,5 @@ module FlightPlanCli
     end
 
     map co: :checkout
-
-    private
-
   end
 end

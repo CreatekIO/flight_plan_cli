@@ -50,7 +50,7 @@ module FlightPlanCli
 
       def fetch
         puts 'Fetching...'.green
-        git.remotes.each {|remote| remote.fetch(credentials: ssh_agent) }
+        git.remotes.each { |remote| remote.fetch(credentials: ssh_agent) }
       end
 
       def ssh_agent
