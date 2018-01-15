@@ -1,5 +1,6 @@
 require 'thor'
 require 'colorize'
+require 'rugged'
 
 module FlightPlanCli
   class ApiUnauthorized < StandardError; end
@@ -28,6 +29,14 @@ module FlightPlanCli
       puts "Network error. #{e.message}".red
     end
 
+    desc 'checkout ISSUE_NO', 'checkout a branch for ISSUE_NO'
+    def checkout(issue_no)
+      puts "Checking out branch for #{issue_no}"
+      local_branch_for(issue_no) || remote_branch_for(issuei_no)
+    end
+
+    map co: :checkout
+
     private
 
     attr_reader :board_id, :repo_id, :default_swimlane_ids
@@ -41,6 +50,44 @@ module FlightPlanCli
       @api_url = config['api_url']
       @api_key = ENV['FLIGHT_PLAN_API_KEY']
       @api_secret = ENV['FLIGHT_PLAN_API_SECRET']
+    end
+
+    def local_branch_for(issue)
+      issue_branches = local_branches.grep(/##{issue}[^0-9]/)
+      return false unless issue_branches.count == 1
+
+      branch = issue_branches.first
+      puts "Checking out local branch '#{branch}'".green
+      git.checkout(branch)
+      true
+    end
+
+    def local_branches
+      @local_branches ||= git.branches.each(:local).map(&:name)
+    end
+
+    def remote_branch_for(issue)
+      git.fetch('origin')
+      return
+      git.branches.each(:remote) do |branch|
+        local_name = branch.name[branch.remote_name.size+1..-1]
+        next unless local_name.start_with? "feature/##{issue}-"
+        puts "Checking out and tracking remote branch '#{local_name}'".green
+        new_branch = git.branches.create(local_name, branch.name)
+        new_branch.upstream = branch
+        git.checkout(local_name)
+        return true
+      end
+      false
+    end
+
+    def git
+      @git ||= Rugged::Repository.new(Dir.pwd)
+    end
+
+    def fetch
+      puts 'fetching...'
+      git.remotes.each(&:fetch)
     end
 
     def print_swimlane(swimlane)
