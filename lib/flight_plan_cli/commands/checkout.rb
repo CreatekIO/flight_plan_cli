@@ -21,7 +21,7 @@ module FlightPlanCli
       end
 
       def remote_branch_for(issue)
-        git.fetch('origin')
+        fetch
         issue_branches = remote_branches.map(&:name).grep(/##{issue}[^0-9]/)
         return false unless issue_branches.count == 1
 
@@ -49,7 +49,7 @@ module FlightPlanCli
       end
 
       def fetch
-        puts 'fetching...'
+        puts 'Fetching...'.green
         git.remotes.each {|remote| remote.fetch(credentials: ssh_agent) }
       end
 
