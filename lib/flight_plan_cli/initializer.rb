@@ -32,7 +32,9 @@ module FlightPlanCli
     desc 'checkout ISSUE_NO', 'checkout a branch for ISSUE_NO'
     def checkout(issue_no)
       puts "Checking out branch for #{issue_no}"
-      local_branch_for(issue_no) || remote_branch_for(issuei_no)
+      local_branch_for(issue_no) || remote_branch_for(issue_no)
+    rescue Rugged::CheckoutError => e
+      puts "Unable to checkout: #{e.message}".red
     end
 
     map co: :checkout
@@ -53,7 +55,7 @@ module FlightPlanCli
     end
 
     def local_branch_for(issue)
-      issue_branches = local_branches.grep(/##{issue}[^0-9]/)
+      issue_branches = local_branches.map(&:name).grep(/##{issue}[^0-9]/)
       return false unless issue_branches.count == 1
 
       branch = issue_branches.first
@@ -62,23 +64,28 @@ module FlightPlanCli
       true
     end
 
-    def local_branches
-      @local_branches ||= git.branches.each(:local).map(&:name)
-    end
-
     def remote_branch_for(issue)
       git.fetch('origin')
-      return
-      git.branches.each(:remote) do |branch|
-        local_name = branch.name[branch.remote_name.size+1..-1]
-        next unless local_name.start_with? "feature/##{issue}-"
-        puts "Checking out and tracking remote branch '#{local_name}'".green
-        new_branch = git.branches.create(local_name, branch.name)
-        new_branch.upstream = branch
-        git.checkout(local_name)
-        return true
-      end
-      false
+      issue_branches = remote_branches.map(&:name).grep(/##{issue}[^0-9]/)
+      return false unless issue_branches.count == 1
+
+      remote_branch_name = issue_branches.first
+      branch = remote_branches.find { |rb| rb.name == remote_branch_name }
+      local_name = branch.name[branch.remote_name.size + 1..-1]
+
+      puts "Checking out and tracking remote branch '#{local_name}'".green
+      new_branch = git.branches.create(local_name, branch.name)
+      new_branch.upstream = branch
+      git.checkout(local_name)
+      true
+    end
+
+    def local_branches
+      @local_branches ||= git.branches.each(:local)
+    end
+
+    def remote_branches
+      @remote_branches ||= git.branches.each(:remote)
     end
 
     def git
