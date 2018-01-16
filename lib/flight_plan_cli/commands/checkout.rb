@@ -29,13 +29,19 @@ module FlightPlanCli
 
         remote_branch_name = issue_branches.first
         branch = remote_branches.find { |rb| rb.name == remote_branch_name }
-        local_name = branch.name[branch.remote_name.size + 1..-1]
 
-        puts "Checking out and tracking remote branch '#{local_name}'".green
+        puts "Checking out and tracking remote branch '#{branch.name}'".green
+        checkout_locally(branch)
+        true
+      end
+
+      def checkout_locally(branch)
+        local_name = branch.name[branch.remote_name.size + 1..-1]
         new_branch = git.branches.create(local_name, branch.name)
         new_branch.upstream = branch
         git.checkout(local_name)
-        true
+      end
+
       end
 
       def local_branches
