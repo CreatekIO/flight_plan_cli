@@ -1,11 +1,13 @@
 module FlightPlanCli
   module Commands
     class Checkout
-      def process(issue_no)
-        puts "Checking out branch for #{issue_no}"
-        local_branch_for(issue_no) ||
-          remote_branch_for(issue_no) ||
-          new_branch_for(issue_no)
+      include FlightPlanCli::Config
+
+      def process(issue)
+        puts "Checking out branch for #{issue}"
+        local_branch_for(issue) ||
+          remote_branch_for(issue) ||
+          new_branch_for(issue)
       rescue Rugged::CheckoutError => e
         puts "Unable to checkout: #{e.message}".red
       end
@@ -42,6 +44,11 @@ module FlightPlanCli
         git.checkout(local_name)
       end
 
+      def new_branch_for(issue)
+        read_config
+        branches = client.board_tickets(
+          board_id: board_id, repo_id: repo_id, remote_number: issue
+        )
       end
 
       def local_branches
