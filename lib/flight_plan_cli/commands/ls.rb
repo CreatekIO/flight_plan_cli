@@ -30,8 +30,7 @@ module FlightPlanCli
       private
 
       def tickets_by_swimlane
-        response = client.board_tickets(board_id: board_id, repo_id: repo_id)
-        puts 'ok2'
+        response = client.board_tickets
         raise ApiUnauthorized if response.code == 401
         raise ApiNotFound if response.code == 404
 

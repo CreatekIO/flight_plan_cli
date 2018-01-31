@@ -21,7 +21,9 @@ module FlightPlanCli
       @client ||= FlightPlanCli::Api.new(
         url: api_url,
         key: api_key,
-        secret: api_secret
+        secret: api_secret,
+        board_id: board_id,
+        repo_id: repo_id
       )
     end
 

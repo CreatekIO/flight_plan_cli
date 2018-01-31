@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe FlightPlanCli::Api do
-  subject { described_class.new(url: url, key: key, secret: secret) }
+  subject { described_class.new(url: url, key: key, secret: secret, board_id: board_id) }
   let(:url) { 'https://flightplan.createk.io/api' }
   let(:key) { '55455565ghgjffgt' }
   let(:secret) { '334547865fhr2uyj' }
@@ -23,7 +23,7 @@ RSpec.describe FlightPlanCli::Api do
              )
              .to_return(status: 200, body: '', headers: {})
 
-      subject.board_tickets(board_id: board_id.to_s)
+      subject.board_tickets
 
       expect(stub).to have_been_requested
     end

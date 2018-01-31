@@ -25,7 +25,6 @@ module FlightPlanCli
       end
 
       def remote_branch_for(issue)
-        fetch
         issue_branches = remote_branches.map(&:name).grep(/##{issue}[^0-9]/)
         return false unless issue_branches.count == 1
 
@@ -56,7 +55,11 @@ module FlightPlanCli
       end
 
       def remote_branches
-        @remote_branches ||= git.branches.each(:remote)
+        @remote_branches ||=
+          begin
+            fetch
+            git.branches.each(:remote)
+          end
       end
 
       def fetch
