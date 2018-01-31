@@ -1,6 +1,12 @@
 module FlightPlanCli
   module Commands
     class Ls
+      module Color
+        SWIMLANE = :cyan
+        ISSUE = :yellow
+        ISSUE_NO = :red
+      end
+
       include FlightPlanCli::Config
 
       def initialize
@@ -42,10 +48,16 @@ module FlightPlanCli
       end
 
       def print_swimlane(swimlane)
-        puts "#{swimlane['name']} (#{swimlane['tickets'].count})".green
+        puts "#{swimlane['name']} (#{swimlane['tickets'].count})"
+          .colorize(Color::SWIMLANE)
+
         swimlane['tickets'].each do |ticket|
-          puts "├── #{ticket['remote_number'].rjust(4)} : #{ticket['remote_title']}".yellow
+          title = ticket['remote_title']
+          title = title.underline if git.head.name =~ /##{ticket['remote_number']}[^0-9]/
+          print "  #{ticket['remote_number']} ".colorize(Color::ISSUE_NO)
+          puts title.colorize(Color::ISSUE)
         end
+        puts
       end
     end
   end
