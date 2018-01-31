@@ -59,10 +59,6 @@ module FlightPlanCli
         @remote_branches ||= git.branches.each(:remote)
       end
 
-      def git
-        @git ||= Rugged::Repository.new(Dir.pwd)
-      end
-
       def fetch
         puts 'Fetching...'.green
         git.remotes.each { |remote| remote.fetch(credentials: credentials) }

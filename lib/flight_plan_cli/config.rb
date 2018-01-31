@@ -25,6 +25,10 @@ module FlightPlanCli
       )
     end
 
+    def git
+      @git ||= Rugged::Repository.new(Dir.pwd)
+    end
+
     def config
       @config ||=
         begin
