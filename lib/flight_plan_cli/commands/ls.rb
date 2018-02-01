@@ -4,7 +4,8 @@ module FlightPlanCli
       module Color
         SWIMLANE = :cyan
         ISSUE = :yellow
-        ISSUE_NO = :red
+        ISSUE_NO = :light_red
+        CHECKED_OUT_BACKGROUND = :light_black
       end
 
       include FlightPlanCli::Config
@@ -51,12 +52,19 @@ module FlightPlanCli
           .colorize(Color::SWIMLANE)
 
         swimlane['tickets'].each do |ticket|
-          title = ticket['remote_title']
-          title = title.underline if git.head.name =~ /##{ticket['remote_number']}[^0-9]/
-          print "  #{ticket['remote_number']} ".colorize(Color::ISSUE_NO)
-          puts title.colorize(Color::ISSUE)
+          print_ticket(ticket)
         end
         puts
+      end
+
+      def print_ticket(ticket)
+        checked_out = git.head.name =~ /##{ticket['remote_number']}[^0-9]/
+        line =
+          "  #{ticket['remote_number']}".colorize(Color::ISSUE_NO) +
+          " #{ticket['remote_title']} ".colorize(Color::ISSUE)
+        line = line.colorize(background: Color::CHECKED_OUT_BACKGROUND) if checked_out
+
+        puts line
       end
     end
   end
