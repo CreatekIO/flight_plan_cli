@@ -1,6 +1,6 @@
 module FlightPlanCli
   module Commands
-    class Ls
+    class List
       module Color
         SWIMLANE = :cyan
         ISSUE = :yellow

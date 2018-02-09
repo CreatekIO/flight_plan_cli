@@ -16,7 +16,7 @@ module FlightPlanCli
 
     desc 'ls', 'List open issues'
     def ls
-      Commands::Ls.new.process
+      Commands::List.new.process
     end
 
     desc 'checkout ISSUE_NO', 'checkout a branch for ISSUE_NO'
