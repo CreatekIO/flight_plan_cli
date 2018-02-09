@@ -17,6 +17,14 @@ module FlightPlanCli
       @api_secret = ENV['FLIGHT_PLAN_API_SECRET']
     end
 
+    def ssh_private_key
+      ENV['GIT_SSH_PRIVATE_KEY'] || '~/.ssh/id_rsa'
+    end
+
+    def ssh_public_key
+      ENV['GIT_SSH_PUBLIC_KEY'] || '~/.ssh/id_rsa.pub'
+    end
+
     def client
       @client ||= FlightPlanCli::Api.new(
         url: api_url,

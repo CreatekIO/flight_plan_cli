@@ -86,8 +86,8 @@ module FlightPlanCli
       def credentials
         @ssh_agent ||= Rugged::Credentials::SshKey.new(
           username: 'git',
-          publickey: File.expand_path('~/.ssh/id_rsa.pub'),
-          privatekey: File.expand_path('~/.ssh/id_rsa')
+          publickey: File.expand_path(ssh_public_key),
+          privatekey: File.expand_path(ssh_private_key)
         )
       end
     end
