@@ -5,7 +5,7 @@ a tool which privdes a convient way to manage issues, open PR and deploy from th
 line.
 
 ## Instillation
-FlightPlan CLI (fp) is a Ruby gem, and as such can be installed using `gem` as follows:
+FlightPlan CLI (flight) is a Ruby gem, and as such can be installed using `gem` as follows:
 
 ```bash
 gem install flight_plan_cli
@@ -45,11 +45,11 @@ ls:
 Useful commands
 
 ```
-fp ls           List open issues (issues in swimlanes with display_duration switched on)
+flight ls           List open issues (issues in swimlanes with display_duration switched on)
 
-fp ls mine      List open issues assigned to you.
+flight ls mine      List open issues assigned to you.
 
-fp co issue_no  Checkout the branch for the given issue number. Pull from remote/origin if
+flight co issue_no  Checkout the branch for the given issue number. Pull from remote/origin if
                 it exists, otherwise create (from master) and set remote tracking branch
 
 
