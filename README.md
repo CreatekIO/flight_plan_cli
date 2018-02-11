@@ -1,7 +1,8 @@
 # FlightPlan Command Line Tool
 
-FlightPlan is an integrated issue tracking and release management tool. FLightPlan CLI is a tool which privdes a convient
-way to manage issues, open PR and deploy from the command line.
+FlightPlan is an integrated issue tracking and release management tool. FLightPlan CLI is
+a tool which privdes a convient way to manage issues, open PR and deploy from the command
+line.
 
 ## Instillation
 FlightPlan CLI (fp) is a Ruby gem, and as such can be installed using `gem` as follows:
@@ -11,15 +12,35 @@ gem install flight_plan_cli
 ```
 
 ## Setup
-You may wish to creat a `.env` file in your project folder for overriding default
-flight_plan_cli configuration. Here is an example:
-```yaml
-FLIGHT_PLAN_API_KEY=fgeryeeritudfg435345
-FLIGHT_PLAN_API_SECRET=345fgfgj4i534t5345
-GIT_SSH_PRIVATE_KEY=~/.ssh/git_hub_key
-GIT_SSH_PUBLIC_KEY=~/.ssh/git_hub_key.pub
+There are two configuration files for the project, both of which reside inside the
+`.flight_plan_cli/` folder
+
+### 1. user.yml
+The file has your personal settings such as the location of your SSH and FlightPLan keys
+(this file should be git-ignored)
+```yml
+---
+flight_plan_api_key=fgeryeeritudfg435345
+flight_plan_api_secret=345fgfgj4i534t5345
+git_ssh_private_key=~/.ssh/git_hub_key
+git_ssh_public_key=~/.ssh/git_hub_key.pub
 ```
 
+### 2. config.yml
+This contains the general configuration for the project and should be committed to the
+project.
+```yml
+---
+api_url: 'http://dev.createk.io/api'
+board_id: 4
+repo_id: 6
+ls:
+  default_swimlane_ids:
+    - 57 # Planning
+    - 58 # Planning - Done
+    - 59 # Development
+    - 60 # Development - blocked
+```
 ## Usage
 Useful commands
 
