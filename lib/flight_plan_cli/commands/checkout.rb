@@ -3,6 +3,10 @@ module FlightPlanCli
     class Checkout
       include FlightPlanCli::Config
 
+      def initialize
+        read_config
+      end
+
       def process(issue)
         puts "Checking out branch for #{issue}"
         local_branch_for(issue) ||
@@ -44,7 +48,6 @@ module FlightPlanCli
       end
 
       def new_branch_for(issue)
-        read_config
         branches = client.board_tickets(remote_number: issue)
         # TODO: update flight_plan to only return one issue when remote_numer is provided
         branches = branches.select { |b| b['ticket']['remote_number'] == issue }
@@ -86,8 +89,8 @@ module FlightPlanCli
       def credentials
         @ssh_agent ||= Rugged::Credentials::SshKey.new(
           username: 'git',
-          publickey: File.expand_path(ssh_public_key),
-          privatekey: File.expand_path(ssh_private_key)
+          publickey: File.expand_path(git_ssh_public_key),
+          privatekey: File.expand_path(git_ssh_private_key)
         )
       end
     end

@@ -2,10 +2,12 @@ module FlightPlanCli
   module Config
     private
 
-    YAML_FILE = '.flight_plan_cli.yml'.freeze
+    CONFIG_YAML_PATH = '.flight_plan_cli/config.yml'.freeze
+    USER_YAML_PATH = '.flight_plan_cli/user.yml'.freeze
 
     attr_reader :board_id, :repo_id, :default_swimlane_ids
     attr_reader :api_url, :api_key, :api_secret
+    attr_reader :git_ssh_public_key, :git_ssh_private_key
 
     def read_config
       @board_id = config['board_id']
@@ -13,16 +15,10 @@ module FlightPlanCli
       @default_swimlane_ids = config['ls']['default_swimlane_ids']
 
       @api_url = config['api_url']
-      @api_key = ENV['FLIGHT_PLAN_API_KEY']
-      @api_secret = ENV['FLIGHT_PLAN_API_SECRET']
-    end
-
-    def ssh_private_key
-      ENV['GIT_SSH_PRIVATE_KEY'] || '~/.ssh/id_rsa'
-    end
-
-    def ssh_public_key
-      ENV['GIT_SSH_PUBLIC_KEY'] || '~/.ssh/id_rsa.pub'
+      @api_key = config['flight_plan_api_key']
+      @api_secret = config['flight_plan_api_secret']
+      @git_ssh_private_key = config['git_ssh_private_key'] || '~/.ssh/id_rsa'
+      @git_ssh_public_key = config['git_ssh_public_key'] || '~/.ssh/id_rsa.pub'
     end
 
     def client
@@ -42,12 +38,17 @@ module FlightPlanCli
     def config
       @config ||=
         begin
-          unless File.exist?(YAML_FILE)
-            puts "Could not file #{YAML_FILE} file."
-            exit 1
-          end
-          YAML.load_file(YAML_FILE)
+          check_config_exists
+          YAML.load_file(CONFIG_YAML_PATH).merge(
+            FileTest.exist?(USER_YAML_PATH) ? YAML.load_file(USER_YAML_PATH) : {}
+          )
         end
+    end
+
+    def check_config_exists
+      return if FileTest.exist?(CONFIG_YAML_PATH)
+      puts "#{CONFIG_YAML_PATH} not found"
+      exit 1
     end
   end
 end
