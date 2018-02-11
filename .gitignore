@@ -1,3 +1,4 @@
 *.gem
 Gemfile.lock
 .env
+.flight_plan_cli/user.yml
