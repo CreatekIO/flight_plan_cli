@@ -50,6 +50,8 @@ module FlightPlanCli
       end
 
       def new_branch_for_issue
+        git.checkout('master')
+        git.pull
         branches = client.board_tickets(remote_number: issue_no)
         # TODO: update flight_plan to only return one issue when remote_numer is provided
         branches = branches.select { |b| b['ticket']['remote_number'] == issue_no }
@@ -59,8 +61,8 @@ module FlightPlanCli
 
         puts "Creating new branch #{branch_name} from master".green
 
-        git.branches.create(branch_name, 'origin/master')
         git.checkout(branch_name)
+        git.push
       end
 
       def branch_name(branch)
