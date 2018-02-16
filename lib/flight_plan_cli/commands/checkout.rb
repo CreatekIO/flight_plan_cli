@@ -58,11 +58,8 @@ module FlightPlanCli
         return false unless branches.count == 1
 
         branch_name = branch_name(branches.first)
-
         puts "Creating new branch #{branch_name} from master".green
-
         git.checkout(branch_name)
-        git.push
       end
 
       def branch_name(branch)
