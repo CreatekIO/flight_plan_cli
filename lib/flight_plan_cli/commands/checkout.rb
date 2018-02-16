@@ -5,7 +5,7 @@ module FlightPlanCli
 
       def initialize(issue_no)
         @issue_no = issue_no
-        @fetched = true
+        @fetched = false
         read_config
       end
 
