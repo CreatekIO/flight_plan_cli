@@ -59,7 +59,7 @@ module FlightPlanCli
 
         branch_name = branch_name(branches.first)
         puts "Creating new branch #{branch_name} from master".green
-        git.checkout(branch_name)
+        git.branch(branch_name).checkout
       end
 
       def branch_name(branch)
