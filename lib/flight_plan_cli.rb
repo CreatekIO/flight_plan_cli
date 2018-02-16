@@ -1,4 +1,6 @@
-require 'dotenv/load'
+require 'thor'
+require 'colorize'
+require 'git'
 require 'flight_plan_cli/config'
 require 'flight_plan_cli/commands/list'
 require 'flight_plan_cli/commands/checkout'

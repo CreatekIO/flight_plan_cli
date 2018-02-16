@@ -5,6 +5,7 @@ module FlightPlanCli
 
       def initialize
         read_config
+        @fetched = false
       end
 
       def process(issue)
@@ -12,8 +13,9 @@ module FlightPlanCli
         local_branch_for(issue) ||
           remote_branch_for(issue) ||
           new_branch_for(issue)
-      rescue Rugged::CheckoutError => e
-        puts "Unable to checkout: #{e.message}".red
+      rescue Git::GitExecuteError => e
+        puts 'Unable to checkout'.red
+        puts e.message
       end
 
       private
@@ -64,34 +66,25 @@ module FlightPlanCli
       def branch_name(branch)
         "feature/##{branch['ticket']['remote_number']}-" +
           branch['ticket']['remote_title']
-          .gsub(/[^a-z0-9\s]/i, '')
-          .tr(' ', '-')
-          .downcase
+            .gsub(/[^a-z0-9\s]/i, '')
+            .tr(' ', '-')
+            .downcase
       end
 
       def local_branches
-        @local_branches ||= git.branches.each(:local)
+        git.branches.local
       end
 
       def remote_branches
-        @remote_branches ||=
-          begin
-            fetch
-            git.branches.each(:remote)
-          end
+        fetch
+        git.branches.remote
       end
 
       def fetch
+        return if @fetched
         puts 'Fetching...'.green
-        git.remotes.each { |remote| remote.fetch(credentials: credentials) }
-      end
-
-      def credentials
-        @ssh_agent ||= Rugged::Credentials::SshKey.new(
-          username: 'git',
-          publickey: File.expand_path(git_ssh_public_key),
-          privatekey: File.expand_path(git_ssh_private_key)
-        )
+        git.remote('origin').fetch
+        @fetched = true
       end
     end
   end

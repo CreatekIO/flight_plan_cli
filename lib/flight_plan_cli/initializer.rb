@@ -1,6 +1,3 @@
-require 'thor'
-require 'colorize'
-require 'rugged'
 
 module FlightPlanCli
   class ApiUnauthorized < StandardError; end

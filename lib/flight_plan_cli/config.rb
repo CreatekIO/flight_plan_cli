@@ -7,7 +7,6 @@ module FlightPlanCli
 
     attr_reader :board_id, :repo_id, :default_swimlane_ids
     attr_reader :api_url, :api_key, :api_secret
-    attr_reader :git_ssh_public_key, :git_ssh_private_key
 
     def read_config
       @board_id = config['board_id']
@@ -17,8 +16,6 @@ module FlightPlanCli
       @api_url = config['api_url']
       @api_key = config['flight_plan_api_key']
       @api_secret = config['flight_plan_api_secret']
-      @git_ssh_private_key = config['git_ssh_private_key'] || '~/.ssh/id_rsa'
-      @git_ssh_public_key = config['git_ssh_public_key'] || '~/.ssh/id_rsa.pub'
     end
 
     def client
@@ -32,7 +29,7 @@ module FlightPlanCli
     end
 
     def git
-      @git ||= Rugged::Repository.new(Dir.pwd)
+      @git ||= Git.open(Dir.pwd)
     end
 
     def config

@@ -58,7 +58,7 @@ module FlightPlanCli
       end
 
       def print_ticket(ticket)
-        checked_out = git.head.name =~ /##{ticket['remote_number']}[^0-9]/
+        checked_out = git.branch.name =~ /##{ticket['remote_number']}[^0-9]/
         line =
           "  #{ticket['remote_number']}".colorize(Color::ISSUE_NO) +
           " #{ticket['remote_title']} ".colorize(Color::ISSUE)

@@ -25,8 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '~> 3.2.1'
 
   spec.add_dependency 'colorize', '~> 0.7.3'
-  spec.add_dependency 'dotenv', '~> 2.2.1'
+  spec.add_dependency 'git', '~> 1.3.0'
   spec.add_dependency 'httparty', '~> 0.13.1'
-  spec.add_dependency 'rugged', '~> 0.26.0'
   spec.add_dependency 'thor', '~> 0.20.0'
 end
