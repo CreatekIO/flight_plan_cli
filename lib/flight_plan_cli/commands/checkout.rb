@@ -3,25 +3,25 @@ module FlightPlanCli
     class Checkout
       include FlightPlanCli::Config
 
-      def initialize
+      def initialize(issue_no)
+        @issue_no = issue_no
+        @fetched = true
         read_config
-        @fetched = false
       end
 
-      def process(issue)
-        puts "Checking out branch for #{issue}"
-        local_branch_for(issue) ||
-          remote_branch_for(issue) ||
-          new_branch_for(issue)
+      def process
+        local_branch_for_issue || remote_branch_for_issue || new_branch_for_issue
       rescue Git::GitExecuteError => e
         puts 'Unable to checkout'.red
-        puts e.message
+        puts e.message.yellow
       end
 
       private
 
-      def local_branch_for(issue)
-        issue_branches = local_branches.map(&:name).grep(/##{issue}[^0-9]/)
+      attr_reader :issue_no
+
+      def local_branch_for_issue
+        issue_branches = local_branches.map(&:name).grep(/##{issue_no}[^0-9]/)
         return false unless issue_branches.count == 1
 
         branch = issue_branches.first
@@ -30,8 +30,8 @@ module FlightPlanCli
         true
       end
 
-      def remote_branch_for(issue)
-        issue_branches = remote_branches.map(&:name).grep(/##{issue}[^0-9]/)
+      def remote_branch_for_issue
+        issue_branches = remote_branches.map(&:name).grep(/##{issue_no}[^0-9]/)
         return false unless issue_branches.count == 1
 
         remote_branch_name = issue_branches.first
@@ -49,10 +49,10 @@ module FlightPlanCli
         git.checkout(local_name)
       end
 
-      def new_branch_for(issue)
-        branches = client.board_tickets(remote_number: issue)
+      def new_branch_for_issue
+        branches = client.board_tickets(remote_number: issue_no)
         # TODO: update flight_plan to only return one issue when remote_numer is provided
-        branches = branches.select { |b| b['ticket']['remote_number'] == issue }
+        branches = branches.select { |b| b['ticket']['remote_number'] == issue_no }
         return false unless branches.count == 1
 
         branch_name = branch_name(branches.first)
