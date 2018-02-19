@@ -38,7 +38,7 @@ module FlightPlanCli
         branch = remote_branches.find { |rb| rb.name == remote_branch_name }
 
         puts "Checking out and tracking remote branch '#{branch.name}'".green
-        branch.checkout
+        git.checkout(branch.name)
         true
       end
 
