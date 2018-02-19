@@ -38,12 +38,8 @@ module FlightPlanCli
         branch = remote_branches.find { |rb| rb.name == remote_branch_name }
 
         puts "Checking out and tracking remote branch '#{branch.name}'".green
-        checkout_locally(branch)
-        true
-      end
-
-      def checkout_locally(branch)
         branch.checkout
+        true
       end
 
       def new_branch_for_issue
