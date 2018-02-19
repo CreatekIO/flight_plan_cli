@@ -43,10 +43,7 @@ module FlightPlanCli
       end
 
       def checkout_locally(branch)
-        local_name = branch.name[branch.remote_name.size + 1..-1]
-        new_branch = git.branches.create(local_name, branch.name)
-        new_branch.upstream = branch
-        git.checkout(local_name)
+        branch.checkout
       end
 
       def new_branch_for_issue
