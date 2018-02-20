@@ -13,6 +13,10 @@ RSpec.describe FlightPlanCli::Commands::Checkout do
     let(:local_branches) { [] }
     let(:remote_branches) { [] }
 
+    before do
+      allow(subject).to receive(:read_config)
+    end
+
     context 'when there is a local branch for the issue' do
       let(:local_branches) { [branch] }
       let(:output_text) { /Checking out local branch/ }
