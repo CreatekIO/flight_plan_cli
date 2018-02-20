@@ -1,12 +1,12 @@
 module FlightPlanCli
   module Commands
     class Checkout
-      include FlightPlanCli::Config
+      include FlightPlanCli::Clients::Git
+      include FlightPlanCli::Clients::FlightPlan
 
       def initialize(issue_no)
         @issue_no = issue_no
         @fetched = false
-        read_config
       end
 
       def process

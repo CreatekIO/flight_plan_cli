@@ -1,6 +1,9 @@
 module FlightPlanCli
   module Commands
     class List
+      include FlightPlanCli::Clients::Git
+      include FlightPlanCli::Clients::FlightPlan
+
       module Color
         SWIMLANE = :cyan
         ISSUE = :yellow
@@ -8,15 +11,9 @@ module FlightPlanCli
         CHECKED_OUT_BACKGROUND = :light_black
       end
 
-      include FlightPlanCli::Config
-
-      def initialize
-        read_config
-      end
-
       def process
         swimlanes = tickets_by_swimlane
-        default_swimlane_ids.each do |swimlane_id|
+        Settings.default_swimlane_ids.each do |swimlane_id|
           next unless swimlanes.key?(swimlane_id)
 
           print_swimlane(swimlanes[swimlane_id])
@@ -31,14 +28,14 @@ module FlightPlanCli
       private
 
       def tickets_by_swimlane
-        response = client.board_tickets
+        response = flight_plan.board_tickets
         raise ApiUnauthorized if response.code == 401
         raise ApiNotFound if response.code == 404
 
         swimlanes = {}
         response.each do |board_ticket|
           swimlane = board_ticket['swimlane']
-          next unless default_swimlane_ids.include? swimlane['id']
+          next unless Settings.default_swimlane_ids.include? swimlane['id']
 
           swimlanes[swimlane['id']] ||= swimlane
           swimlanes[swimlane['id']]['tickets'] ||= []

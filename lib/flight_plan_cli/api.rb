@@ -2,7 +2,6 @@ require 'httparty'
 
 module FlightPlanCli
   class Api
-
     def initialize(url:, key:, secret:, board_id: nil, repo_id: nil)
       @url = url
       @key = key

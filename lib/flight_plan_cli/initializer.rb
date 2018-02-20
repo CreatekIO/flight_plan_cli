@@ -1,16 +1,8 @@
-
 module FlightPlanCli
   class ApiUnauthorized < StandardError; end
   class ApiNotFound < StandardError; end
 
   class Initializer < Thor
-    include FlightPlanCli::Config
-
-    def initialize(*args)
-      read_config
-      super
-    end
-
     desc 'ls', 'List open issues'
     def ls
       Commands::List.new.process
