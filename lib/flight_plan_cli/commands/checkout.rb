@@ -43,7 +43,7 @@ module FlightPlanCli
       end
 
       def new_branch_for_issue
-        branches = client.board_tickets(remote_number: issue_no)
+        branches = flight_plan.board_tickets(remote_number: issue_no)
         # TODO: update flight_plan to only return one issue when remote_numer is provided
         branches = branches.select { |b| b['ticket']['remote_number'] == issue_no }
         return false unless branches.count == 1
