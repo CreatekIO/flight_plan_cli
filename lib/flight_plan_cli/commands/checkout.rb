@@ -64,12 +64,12 @@ module FlightPlanCli
       end
 
       def local_branches
-        git.branches.local
+        @local_branches ||= git.branches.local
       end
 
       def remote_branches
         fetch
-        git.branches.remote
+        @remote_branches ||= git.branches.remote
       end
 
       def fetch
