@@ -58,7 +58,11 @@ module FlightPlanCli
       def branch_name(branch)
         "feature/##{branch['ticket']['remote_number']}-" +
           branch['ticket']['remote_title']
-            .gsub(/[^a-z0-9\s]/i, '')
+            .gsub(/\([^)]*\)/, '') # remove everything inside brackets
+            .match(/^.{0,60}\b/)[0] # take the first 60 chars (finish on word boundry)
+            .gsub(/[^a-z0-9\s]/i, '') # remove everything except alpha-numeric
+            .squeeze
+            .strip
             .tr(' ', '-')
             .downcase
       end
