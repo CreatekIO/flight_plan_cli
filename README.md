@@ -12,18 +12,16 @@ gem install flight_plan_cli
 ```
 
 ## Setup
-There are two configuration files for the project, both of which reside inside the
-`.flight_plan_cli/` folder
+There are two configuration files for the project, both of which reside inside
+`.flight_plan_cli/` in the root of your project.
 
 ### 1. user.yml
-The file has your personal settings such as the location of your SSH and FlightPLan keys
+The file has your personal settings such as the location of your SSH and FlightPlan keys
 (this file should be git-ignored)
 ```yml
 ---
 flight_plan_api_key=fgeryeeritudfg435345
 flight_plan_api_secret=345fgfgj4i534t5345
-git_ssh_private_key=~/.ssh/git_hub_key
-git_ssh_public_key=~/.ssh/git_hub_key.pub
 ```
 
 ### 2. config.yml
