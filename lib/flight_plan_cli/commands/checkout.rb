@@ -61,7 +61,7 @@ module FlightPlanCli
             .gsub(/\([^)]*\)/, '') # remove everything inside brackets
             .match(/^.{0,60}\b/)[0] # take the first 60 chars (finish on word boundry)
             .gsub(/[^a-z0-9\s]/i, '') # remove everything except alpha-numeric
-            .squeeze
+            .squeeze(' ')
             .strip
             .tr(' ', '-')
             .downcase
