@@ -7,6 +7,7 @@ module FlightPlanCli
       def initialize(issue_no, options)
         @issue_no = issue_no
         @base_branch = options["base"]
+        @branch_prefix = options["prefix"]
         @fetched = false
       end
 
@@ -19,7 +20,7 @@ module FlightPlanCli
 
       private
 
-      attr_reader :issue_no, :base_branch
+      attr_reader :issue_no, :base_branch, :branch_prefix
 
       def local_branch_for_issue
         issue_branches = local_branches.map(&:name).grep(/##{issue_no}[^0-9]/)
@@ -57,7 +58,7 @@ module FlightPlanCli
       end
 
       def branch_name(branch)
-        "feature/##{branch['ticket']['remote_number']}-" +
+        "#{branch_prefix}/##{branch['ticket']['remote_number']}-" +
           branch['ticket']['remote_title']
             .gsub(/\([^)]*\)/, '') # remove everything inside brackets
             .match(/^.{0,60}\b/)[0] # take the first 60 chars (finish on word boundry)
