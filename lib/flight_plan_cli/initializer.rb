@@ -9,8 +9,9 @@ module FlightPlanCli
     end
 
     desc 'checkout ISSUE_NO', 'checkout a branch for ISSUE_NO'
+    option :base, desc: 'base branch for the new branch', aliases: :b, default: 'master'
     def checkout(issue_no)
-      Commands::Checkout.new(issue_no).process
+      Commands::Checkout.new(issue_no, options).process
     end
 
     map co: :checkout
