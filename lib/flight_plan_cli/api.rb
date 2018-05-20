@@ -12,13 +12,12 @@ module FlightPlanCli
 
     def board_tickets(assignee_username: nil, remote_number: nil)
       params = {
-        board_id: board_id,
         repo_id: repo_id,
         assignee_username: assignee_username,
         remote_number: remote_number
       }
 
-      HTTParty.get("#{url}/board_tickets.json", query: params, headers: headers)
+      HTTParty.get("#{url}/boards/#{board_id}/board_tickets.json", query: params, headers: headers)
     end
 
     private
