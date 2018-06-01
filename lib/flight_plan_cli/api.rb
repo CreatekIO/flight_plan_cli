@@ -38,7 +38,8 @@ module FlightPlanCli
 
     def headers
       @headers = {
-        'Authorization' => "Token token=\"#{key}:#{secret}\""
+        'Authorization' => "Token token=\"#{key}:#{secret}\"",
+        'Content-Type' => 'application/json'
       }
     end
   end
