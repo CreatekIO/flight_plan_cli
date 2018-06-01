@@ -13,7 +13,7 @@ module FlightPlanCli
 
       def process
         swimlanes = tickets_by_swimlane
-        Settings.default_swimlane_ids.each do |swimlane_id|
+        FlightPlanCli.settings.default_swimlane_ids.each do |swimlane_id|
           next unless swimlanes.key?(swimlane_id)
 
           print_swimlane(swimlanes[swimlane_id])
@@ -35,7 +35,7 @@ module FlightPlanCli
         swimlanes = {}
         response.each do |board_ticket|
           swimlane = board_ticket['swimlane']
-          next unless Settings.default_swimlane_ids.include? swimlane['id']
+          next unless FlightPlanCli.settings.default_swimlane_ids.include? swimlane['id']
 
           swimlanes[swimlane['id']] ||= swimlane
           swimlanes[swimlane['id']]['tickets'] ||= []

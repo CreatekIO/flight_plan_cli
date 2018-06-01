@@ -3,11 +3,11 @@ module FlightPlanCli
     module FlightPlan
       def flight_plan
         @flight_plan ||= FlightPlanCli::Api.new(
-          url: FlightPlanCli::Settings.api_url,
-          key: FlightPlanCli::Settings.api_key,
-          secret: FlightPlanCli::Settings.api_secret,
-          board_id: FlightPlanCli::Settings.board_id,
-          repo_id: FlightPlanCli::Settings.repo_id
+          url: FlightPlanCli.settings.api_url,
+          key: FlightPlanCli.settings.api_key,
+          secret: FlightPlanCli.settings.api_secret,
+          board_id: FlightPlanCli.settings.board_id,
+          repo_id: FlightPlanCli.settings.repo_id
         )
       end
     end

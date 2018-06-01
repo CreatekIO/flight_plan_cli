@@ -1,7 +1,7 @@
 require 'singleton'
 
 module FlightPlanCli
-  class SettingsRecord
+  class Settings
     include Singleton
 
     CONFIG_YAML_PATH = '.flight_plan_cli/config.yml'.freeze
@@ -47,6 +47,4 @@ module FlightPlanCli
       exit 1
     end
   end
-
-  Settings = SettingsRecord.instance
 end
