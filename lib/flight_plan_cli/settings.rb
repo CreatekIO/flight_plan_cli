@@ -1,9 +1,5 @@
-require 'singleton'
-
 module FlightPlanCli
   class Settings
-    include Singleton
-
     CONFIG_YAML_PATH = '.flight_plan_cli/config.yml'.freeze
     USER_YAML_PATH = '.flight_plan_cli/user.yml'.freeze
 

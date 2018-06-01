@@ -12,6 +12,6 @@ require 'flight_plan_cli/api'
 
 module FlightPlanCli
   def self.settings
-    @settings ||= Settings.instance
+    @settings ||= Settings.new
   end
 end
