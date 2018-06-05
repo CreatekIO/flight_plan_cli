@@ -1,6 +1,7 @@
 require 'thor'
 require 'colorize'
 require 'git'
+require 'flight_plan_cli/utils'
 require 'flight_plan_cli/settings'
 require 'flight_plan_cli/clients/git'
 require 'flight_plan_cli/clients/flight_plan'
