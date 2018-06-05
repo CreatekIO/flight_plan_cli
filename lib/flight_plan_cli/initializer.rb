@@ -14,5 +14,10 @@ module FlightPlanCli
     end
 
     map co: :checkout
+
+    desc 'config', 'Print current config'
+    def config
+      Commands::Config.new.process
+    end
   end
 end
