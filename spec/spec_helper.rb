@@ -1,4 +1,5 @@
 require 'webmock/rspec'
+require 'fakefs/spec_helpers'
 require 'flight_plan_cli'
 
 RSpec.configure do |config|
