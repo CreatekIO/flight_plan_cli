@@ -4,8 +4,10 @@ module FlightPlanCli
       include FlightPlanCli::Clients::Git
       include FlightPlanCli::Clients::FlightPlan
 
-      def initialize(issue_no)
+      def initialize(issue_no, options)
         @issue_no = issue_no
+        @base_branch = options["base"]
+        @branch_prefix = options["prefix"]
         @fetched = false
       end
 
@@ -18,7 +20,7 @@ module FlightPlanCli
 
       private
 
-      attr_reader :issue_no
+      attr_reader :issue_no, :base_branch, :branch_prefix
 
       def local_branch_for_issue
         issue_branches = local_branches.map(&:name).grep(/##{issue_no}[^0-9]/)
@@ -49,14 +51,14 @@ module FlightPlanCli
         return false unless branches.count == 1
 
         branch_name = branch_name(branches.first)
-        git.checkout('master')
+        git.checkout(base_branch)
         git.pull
-        puts "Creating new branch #{branch_name} from master".green
+        puts "Creating new branch #{branch_name} from #{base_branch}".green
         git.branch(branch_name).checkout
       end
 
       def branch_name(branch)
-        "feature/##{branch['ticket']['remote_number']}-" +
+        "#{branch_prefix}/##{branch['ticket']['remote_number']}-" +
           branch['ticket']['remote_title']
             .gsub(/\([^)]*\)/, '') # remove everything inside brackets
             .match(/^.{0,60}\b/)[0] # take the first 60 chars (finish on word boundry)
