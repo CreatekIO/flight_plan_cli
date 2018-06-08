@@ -13,6 +13,11 @@ module FlightPlanCli
       Commands::Checkout.new(issue_no).process
     end
 
+    desc 'release', 'create a release'
+    def release
+      Commands::Release.new.process
+    end
+
     map co: :checkout
   end
 end

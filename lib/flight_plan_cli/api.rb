@@ -20,6 +20,17 @@ module FlightPlanCli
       HTTParty.get("#{url}/boards/#{board_id}/board_tickets.json", query: params, headers: headers)
     end
 
+    def create_release(title = nil)
+      params = {
+        release: {
+          title: title || 'FlightPlan CLI release',
+          repo_ids: [repo_id]
+        }
+      }
+
+      HTTParty.post("#{url}/boards/#{board_id}/releases", body: params.to_json, headers: headers)
+    end
+
     private
 
     attr_reader :url, :key, :secret
@@ -27,7 +38,8 @@ module FlightPlanCli
 
     def headers
       @headers = {
-        'Authorization' => "Token token=\"#{key}:#{secret}\""
+        'Authorization' => "Token token=\"#{key}:#{secret}\"",
+        'Content-Type' => 'application/json'
       }
     end
   end
