@@ -20,7 +20,7 @@ module FlightPlanCli
       Commands::Release.new.process
     end
 
-    map co: :checkout
+    map 'co' => 'checkout'
 
     desc 'config', 'Print current config'
     def config
